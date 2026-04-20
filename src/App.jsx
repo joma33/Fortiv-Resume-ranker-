@@ -20,18 +20,14 @@ const PALE_BLUE = "#D6E4F0";
 const BG = "#F5F7FA";
 
 async function callClaude(prompt) {
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
+  const response = await fetch("/api/claude", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 3000,
-      messages: [{ role: "user", content: prompt }],
-    }),
+    body: JSON.stringify({ prompt }),
   });
   if (!response.ok) throw new Error("Request failed");
   const data = await response.json();
-  return data.content.map((b) => b.text || "").join("");
+  return data.text || "";
 }
 
 function FormattedOutput({ text }) {
